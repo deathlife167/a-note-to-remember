@@ -26,7 +26,7 @@ function start() {
     document.getElementById('main').style.display = 'none';
     document.getElementById('story-section').style.display = 'block';
     
-    // Play YouTube music immediately with proper timing
+    // Play YouTube music with proper autoplay
     setTimeout(() => {
         const ytPlayer = document.getElementById('yt-player');
         ytPlayer.src = "https://www.youtube.com/embed/9Q2xAfcl-RE?autoplay=1&mute=0";
@@ -61,7 +61,7 @@ function next() {
             if(i < story[step].length) { 
                 el.innerHTML += story[step].charAt(i); 
                 i++; 
-                // Faster typing speed: 25ms for smooth experience
+                // Fast typing speed for smooth experience
                 setTimeout(typeText, 25); 
             }
             else { 
@@ -89,6 +89,9 @@ function show() {
     // Get the image element
     const img = document.getElementById('secret-img');
     img.classList.add('secret-glow');
+    
+    // Set image source - ADD YOUR IMAGE URL HERE
+    img.src = 'https://i.ibb.co/6H8f9r0/Screenshot-2026-0715-202950.jpg';
     
     // Hide the button
     document.getElementById('secret-btn').style.display = 'none';
@@ -143,4 +146,10 @@ function createFloatingHearts() {
             setTimeout(() => heart.remove(), 8000);
         }, i * 300);
     }
+}
+
+// Handle image loading errors
+function handleImageError() {
+    console.log('Image failed to load');
+    // Fallback - you can set a placeholder or handle differently
 }
