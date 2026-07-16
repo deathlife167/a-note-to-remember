@@ -86,18 +86,72 @@ function show() {
     const imageContainer = document.getElementById('image-container');
     imageContainer.style.display = 'block';
     
-    // Get the image element
-    const img = document.getElementById('secret-img');
-    img.classList.add('secret-glow');
-    
-    // Set image source - ADD YOUR IMAGE URL HERE
-    img.src = 'https://i.ibb.co/6H8f9r0/Screenshot-2026-0715-202950.jpg';
+    // Create beautiful canvas with message
+    createMessageCanvas();
     
     // Hide the button
     document.getElementById('secret-btn').style.display = 'none';
+}
+
+function createMessageCanvas() {
+    const canvas = document.getElementById('secret-canvas');
+    const ctx = canvas.getContext('2d');
     
-    // Pulse animation
-    img.style.animation = 'pulse 0.6s ease-out';
+    // Set canvas size
+    canvas.width = 600;
+    canvas.height = 700;
+    
+    // Create gradient background
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, '#f4e1f7');
+    gradient.addColorStop(1, '#d1c4e9');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Add decorative hearts and emojis
+    ctx.font = 'bold 40px Poppins, Arial';
+    ctx.textAlign = 'center';
+    
+    // Top decoration
+    ctx.fillText('💜 ✨ 💕', canvas.width / 2, 60);
+    
+    // Title
+    ctx.font = 'bold 32px Poppins, Arial';
+    ctx.fillStyle = '#6a1b9a';
+    ctx.fillText('My Unsent Message', canvas.width / 2, 120);
+    
+    // Divider
+    ctx.strokeStyle = '#9932CC';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(50, 140);
+    ctx.lineTo(canvas.width - 50, 140);
+    ctx.stroke();
+    
+    // Main message with proper word wrapping
+    ctx.font = 'italic 18px Poppins, Arial';
+    ctx.fillStyle = '#4a148c';
+    
+    const message = "Disti mahh I lovee youh...\nI justt wanna talk with you.\nTalk with you until all the\nmoments of waiting are erased.\nMake me yours.\nWhen you will be mine,\nI will hold you close\nand take a deep breath.\nI will hold you until\nall the moments of waiting\nare erased !!!";
+    
+    const lines = message.split('\n');
+    let yPosition = 200;
+    
+    lines.forEach(line => {
+        ctx.fillText(line, canvas.width / 2, yPosition);
+        yPosition += 35;
+    });
+    
+    // Bottom decoration
+    ctx.font = 'bold 28px Poppins, Arial';
+    ctx.fillText('💜 ✨ 💕', canvas.width / 2, canvas.height - 60);
+    
+    // Add glow effect
+    const canvasContainer = document.getElementById('image-container');
+    canvasContainer.style.boxShadow = '0 0 40px rgba(233, 30, 99, 0.7)';
+    
+    // Animation
+    canvas.style.animation = 'fadeIn 0.8s ease-out';
 }
 
 function updateProgressBar() {
@@ -146,10 +200,4 @@ function createFloatingHearts() {
             setTimeout(() => heart.remove(), 8000);
         }, i * 300);
     }
-}
-
-// Handle image loading errors
-function handleImageError() {
-    console.log('Image failed to load');
-    // Fallback - you can set a placeholder or handle differently
 }
