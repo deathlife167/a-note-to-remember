@@ -10,8 +10,13 @@ const story = [
 let step = 0;
 let isTyping = false;
 
-// Visit Counter
+// Start music immediately on page load
 window.addEventListener('load', function() {
+    // Play YouTube music
+    const ytPlayer = document.getElementById('yt-player');
+    ytPlayer.src = "https://www.youtube.com/embed/9Q2xAfcl-RE?autoplay=1&mute=0";
+    
+    // Visit Counter
     let visits = localStorage.getItem('visitCount');
     if (visits === null) {
         visits = 1;
@@ -26,12 +31,6 @@ function start() {
     document.getElementById('main').style.display = 'none';
     document.getElementById('story-section').style.display = 'block';
     
-    // Play YouTube music with proper autoplay
-    setTimeout(() => {
-        const ytPlayer = document.getElementById('yt-player');
-        ytPlayer.src = "https://www.youtube.com/embed/9Q2xAfcl-RE?autoplay=1&mute=0";
-    }, 200);
-    
     // Create falling sparkles
     for(let i = 0; i < 40; i++) {
         let s = document.createElement('div');
@@ -41,14 +40,11 @@ function start() {
         document.body.appendChild(s);
     }
     
-    // Add floating emoji hearts
-    createFloatingHearts();
-    
     next();
 }
 
 function next() {
-    if(isTyping) return; // Prevent multiple clicks while typing
+    if(isTyping) return;
     
     if(step < story.length) {
         document.getElementById('next-btn').style.display = 'none';
@@ -61,7 +57,6 @@ function next() {
             if(i < story[step].length) { 
                 el.innerHTML += story[step].charAt(i); 
                 i++; 
-                // Fast typing speed for smooth experience
                 setTimeout(typeText, 25); 
             }
             else { 
@@ -79,17 +74,13 @@ function next() {
 }
 
 function show() { 
-    // Trigger Confetti
     createConfetti();
     
-    // Show image container
     const imageContainer = document.getElementById('image-container');
     imageContainer.style.display = 'block';
     
-    // Create beautiful canvas with message
     createMessageCanvas();
     
-    // Hide the button
     document.getElementById('secret-btn').style.display = 'none';
 }
 
@@ -97,7 +88,6 @@ function createMessageCanvas() {
     const canvas = document.getElementById('secret-canvas');
     const ctx = canvas.getContext('2d');
     
-    // Set canvas size
     canvas.width = 600;
     canvas.height = 700;
     
@@ -108,11 +98,10 @@ function createMessageCanvas() {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Add decorative hearts and emojis
+    // Top decoration
     ctx.font = 'bold 40px Poppins, Arial';
     ctx.textAlign = 'center';
-    
-    // Top decoration
+    ctx.fillStyle = '#6a1b9a';
     ctx.fillText('💜 ✨ 💕', canvas.width / 2, 60);
     
     // Title
@@ -128,7 +117,7 @@ function createMessageCanvas() {
     ctx.lineTo(canvas.width - 50, 140);
     ctx.stroke();
     
-    // Main message with proper word wrapping
+    // Main message
     ctx.font = 'italic 18px Poppins, Arial';
     ctx.fillStyle = '#4a148c';
     
@@ -144,13 +133,9 @@ function createMessageCanvas() {
     
     // Bottom decoration
     ctx.font = 'bold 28px Poppins, Arial';
+    ctx.fillStyle = '#6a1b9a';
     ctx.fillText('💜 ✨ 💕', canvas.width / 2, canvas.height - 60);
     
-    // Add glow effect
-    const canvasContainer = document.getElementById('image-container');
-    canvasContainer.style.boxShadow = '0 0 40px rgba(233, 30, 99, 0.7)';
-    
-    // Animation
     canvas.style.animation = 'fadeIn 0.8s ease-out';
 }
 
@@ -159,7 +144,6 @@ function updateProgressBar() {
     document.getElementById('progress-fill').style.width = progress + '%';
 }
 
-// Enhanced Confetti Animation
 function createConfetti() {
     const confettiContainer = document.getElementById('confetti');
     const colors = ['#FF69B4', '#FFB6C1', '#FF1493', '#FF00FF', '#8B008B', '#9932CC', '#E91E63', '#C2185B'];
@@ -171,33 +155,12 @@ function createConfetti() {
         confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
         confetti.style.animationDelay = Math.random() * 0.8 + 's';
         
-        // Random size for variety
         const size = Math.random() * 8 + 5;
         confetti.style.width = size + 'px';
         confetti.style.height = size + 'px';
         
         confettiContainer.appendChild(confetti);
         
-        // Remove after animation
         setTimeout(() => confetti.remove(), 3500);
-    }
-}
-
-// Create floating emoji hearts
-function createFloatingHearts() {
-    const container = document.getElementById('story-section');
-    const emojis = ['💜', '💕', '✨', '🌸'];
-    
-    for(let i = 0; i < 15; i++) {
-        setTimeout(() => {
-            let heart = document.createElement('div');
-            heart.className = 'floating-emoji';
-            heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.animationDelay = Math.random() * 2 + 's';
-            container.appendChild(heart);
-            
-            setTimeout(() => heart.remove(), 8000);
-        }, i * 300);
     }
 }
